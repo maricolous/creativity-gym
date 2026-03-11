@@ -54,33 +54,35 @@ export default function MeditationScreen({ image, onDone }) {
   const [bgTransition, setBgTransition] = useState("none");
 
   useEffect(() => {
-    // Zoom in under 18 sekunder
+    // Zoom in under 15 sekunder
     setTimeout(() => {
-      setBgTransition("transform 18s ease-in-out");
-      setBgScale(1.15);
+      setBgTransition("transform 15s ease-in-out");
+      setBgScale(1.08);
     }, 50);
-    // Zoom tillbaka under 20 sekunder (startar vid 18s, klar vid 38s – 2s marginal)
+    // Zoom tillbaka under 15 sekunder (startar vid 15s, klar vid 30s)
     const mid = setTimeout(() => {
-      setBgTransition("transform 20s ease-in-out");
+      setBgTransition("transform 15s ease-out");
       setBgScale(1);
-    }, 18000);
-    return () => clearTimeout(mid);
+    }, 15000);
+    // Ta bort transition helt vid 32s så att scale 1 är helt stabil
+    const settle = setTimeout(() => {
+      setBgTransition("none");
+      setBgScale(1);
+    }, 32000);
+    return () => {
+      clearTimeout(mid);
+      clearTimeout(settle);
+    };
   }, []);
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100vh",
-        overflow: "hidden",
-      }}
-    >
+    <div style={{ position: "fixed", inset: 0, overflow: "hidden" }}>
       <div
         style={{
           position: "absolute",
-          inset: "-10%",
+          inset: 0,
           background: image.gradient,
+          transformOrigin: "center center",
           transform: `scale(${bgScale})`,
           transition: bgTransition,
         }}
@@ -89,6 +91,8 @@ export default function MeditationScreen({ image, onDone }) {
         style={{
           position: "absolute",
           inset: 0,
+          background:
+            "radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.3) 100%)",
         }}
       />
       <div

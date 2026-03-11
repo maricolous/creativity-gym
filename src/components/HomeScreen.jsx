@@ -36,7 +36,7 @@ export default function HomeScreen({
         <div
           style={{
             position: "fixed",
-            inset: "-10%",
+            inset: 0,
             zIndex: 0,
             background: chosenImage.gradient,
           }}
@@ -69,7 +69,7 @@ export default function HomeScreen({
         >
           Creativity Gym
         </h1>
-        <p className="text-gray-400 mb-8 text-lg">
+        <p className="text-white mb-8 text-lg">
           Tre forskningsbaserade övningar för att trigga din kreativitet
         </p>
         {totalScore > 0 && (

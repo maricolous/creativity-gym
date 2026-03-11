@@ -230,7 +230,10 @@ export default function ExerciseScreen({
         </div>
 
         {/* Timer */}
-        <div className="flex justify-between text-sm my-12">
+        <div
+          className="flex justify-between text-sm"
+          style={{ margin: "3vh 0" }}
+        >
           <div className="flex-1" />
           <span
             className={`font-mono font-bold text-2xl ${timeLeft <= 10 && timeLeft > 0 ? "text-red-400 animate-pulse" : "text-white"}`}

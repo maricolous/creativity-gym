@@ -232,7 +232,7 @@ export default function ExerciseScreen({
         {/* Timer */}
         <div
           className="flex justify-between text-sm"
-          style={{ margin: "3vh 0" }}
+          style={{ margin: "5vh 0" }}
         >
           <div className="flex-1" />
           <span

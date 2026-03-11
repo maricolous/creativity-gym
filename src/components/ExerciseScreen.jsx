@@ -116,14 +116,20 @@ export default function ExerciseScreen({
     if (!running || !challengeData) return null;
     if (exIdx === 0) {
       return (
-        <div className="text-6xl font-black text-center text-white my-24">
+        <div
+          className="text-6xl font-black text-center text-white "
+          style={{ margin: "8vh 0" }}
+        >
           {challengeData.name}
         </div>
       );
     }
     if (exIdx === 1) {
       return (
-        <div className="flex items-center justify-center gap-4 my-24">
+        <div
+          className="flex items-center justify-center gap-4"
+          style={{ margin: "8vh 0" }}
+        >
           <span className="text-6xl font-black text-white">
             {challengeData.a}
           </span>
@@ -136,7 +142,10 @@ export default function ExerciseScreen({
     }
     if (exIdx === 2) {
       return (
-        <div className="text-6xl font-black text-center text-white my-24">
+        <div
+          className="text-6xl font-black text-center text-white "
+          style={{ margin: "8vh 0" }}
+        >
           {challengeData.object}
         </div>
       );

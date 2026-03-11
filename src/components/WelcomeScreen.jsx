@@ -1,7 +1,7 @@
 import { toggleFullscreen } from "../utils/helpers";
 
 // Avkommentera och byt till din bild:
-// import welcomeImg from "../assets/bilder/welcome.png";
+import welcomeImg from "../assets/bilder/welcome.png";
 
 export default function WelcomeScreen({ onStart }) {
   return (
@@ -10,9 +10,7 @@ export default function WelcomeScreen({ onStart }) {
       <div
         className="absolute inset-0"
         style={{
-          // background: `url(${welcomeImg}) center/cover no-repeat`,
-          background:
-            "radial-gradient(ellipse at center, #1a1040 0%, #0d0b12 100%)",
+          background: `url(${welcomeImg}) center/cover no-repeat`,
         }}
       />
       <div className="absolute inset-0 bg-black/40" />

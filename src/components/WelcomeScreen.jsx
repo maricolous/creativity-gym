@@ -1,7 +1,7 @@
 import { toggleFullscreen } from "../utils/helpers";
 
 // Avkommentera och byt till din bild:
-import welcomeImg from "../assets/bilder/welcome.png";
+// import welcomeImg from "../assets/bilder/welcome.png";
 
 export default function WelcomeScreen({ onStart }) {
   return (
@@ -10,7 +10,9 @@ export default function WelcomeScreen({ onStart }) {
       <div
         className="absolute inset-0"
         style={{
-          background: `url(${welcomeImg}) center/cover no-repeat`,
+          // background: `url(${welcomeImg}) center/cover no-repeat`,
+          background:
+            "radial-gradient(ellipse at center, #1a1040 0%, #0d0b12 100%)",
         }}
       />
       <div className="absolute inset-0 bg-black/40" />
@@ -27,7 +29,7 @@ export default function WelcomeScreen({ onStart }) {
         >
           Creativity Gym
         </h1>
-        <p className="text-white mb-10 text-m">
+        <p className="text-gray-400 mb-10 text-lg">
           Tre forskningsbaserade övningar för att trigga din kreativitet
         </p>
         <button

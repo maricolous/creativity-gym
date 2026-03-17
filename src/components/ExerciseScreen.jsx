@@ -248,123 +248,112 @@ export default function ExerciseScreen({
       <MuteBtn muted={muted} onToggle={toggleMute} />
       <BgLayer image={chosenImage} opacity={0.65} />
 
-      <div
-        className="max-w-lg w-full mx-auto relative z-10 flex flex-col"
-        style={{ minHeight: "100dvh" }}
-      >
-        {/* Fast topp-sektion */}
-        <div className="flex-shrink-0">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-2">
-            <button
-              onClick={() => setScreen("home")}
-              className="text-gray-400 hover:text-white transition-colors text-sm"
-            >
-              ← Tillbaka
-            </button>
-            <span className="font-bold">{ex.subtitle}</span>
-            <div className="text-sm text-gray-400">{allAnswerCount} svar</div>
-          </div>
-
-          {/* Progress bar */}
-          <div className="relative h-2 bg-white/10 rounded-full overflow-hidden mb-1">
-            <div
-              className={`h-full rounded-full bg-gradient-to-r ${ex.color} transition-all duration-1000`}
-              style={{ width: `${100 - pct}%` }}
-            />
-          </div>
-
-          {/* Timer */}
-          <div
-            className="flex justify-center text-sm"
-            style={{ margin: "2vh 0" }}
+      <div className="max-w-lg w-full mx-auto relative z-10 flex flex-col items-stretch md:justify-center md:min-h-screen">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-2">
+          <button
+            onClick={() => setScreen("home")}
+            className="text-gray-400 hover:text-white transition-colors text-sm"
           >
-            <span
-              className={`font-mono font-bold text-2xl ${timeLeft <= 10 && timeLeft > 0 ? "text-red-400 animate-pulse" : "text-white"}`}
-            >
-              {fmt(timeLeft)}
+            ← Tillbaka
+          </button>
+          <span className="font-bold">{ex.subtitle}</span>
+          <div className="text-sm text-gray-400">{allAnswerCount} svar</div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="relative h-2 bg-white/10 rounded-full overflow-hidden mb-1">
+          <div
+            className={`h-full rounded-full bg-gradient-to-r ${ex.color} transition-all duration-1000`}
+            style={{ width: `${100 - pct}%` }}
+          />
+        </div>
+
+        {/* Timer */}
+        <div
+          className="flex justify-center text-sm"
+          style={{ margin: "2vh 0" }}
+        >
+          <span
+            className={`font-mono font-bold text-2xl ${timeLeft <= 10 && timeLeft > 0 ? "text-red-400 animate-pulse" : "text-white"}`}
+          >
+            {fmt(timeLeft)}
+          </span>
+        </div>
+
+        {/* Ordet */}
+        {renderWord()}
+
+        {/* Challenge card */}
+        <div
+          className="rounded-2xl p-5 mb-3 border border-white/10 relative overflow-hidden"
+          style={{ background: "rgba(0,0,0,0.3)", backdropFilter: "blur(8px)" }}
+        >
+          <div
+            className={`absolute inset-0 ${ex.bgGlow} blur-3xl opacity-20`}
+          />
+          <div className="relative">
+            <p className="text-gray-400 text-sm">{ex.description}</p>
+            {renderPerspectives()}
+          </div>
+        </div>
+
+        {motivation && (
+          <div className="text-center mb-2">
+            <span className="text-amber-400 font-medium animate-bounce text-sm">
+              {motivation}
             </span>
           </div>
+        )}
 
-          {/* Ordet */}
-          {renderWord()}
-
-          {/* Challenge card */}
-          <div
-            className="rounded-2xl p-5 mb-3 border border-white/10 relative overflow-hidden"
-            style={{
-              background: "rgba(0,0,0,0.3)",
-              backdropFilter: "blur(8px)",
-            }}
-          >
-            <div
-              className={`absolute inset-0 ${ex.bgGlow} blur-3xl opacity-20`}
-            />
-            <div className="relative">
-              <p className="text-gray-400 text-sm">{ex.description}</p>
-              {renderPerspectives()}
-            </div>
-          </div>
-
-          {motivation && (
-            <div className="text-center mb-2">
-              <span className="text-amber-400 font-medium animate-bounce text-sm">
-                {motivation}
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Input-sektion – pushad till botten */}
-        <div className="flex-shrink-0 mt-auto">
-          {running ? (
-            <div className="flex gap-2 mb-2">
-              <input
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") addAnswer();
-                }}
-                placeholder={
-                  exIdx === 2
-                    ? `Svar som ${challengeData?.perspectives[activePerspective]}...`
-                    : "Skriv ditt svar..."
-                }
-                className="flex-1 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-white/30 transition-colors"
-                style={{ background: "rgba(0,0,0,0.3)" }}
-              />
-              <button
-                onClick={addAnswer}
-                className={`px-5 rounded-xl bg-gradient-to-r ${ex.color} font-bold hover:opacity-90 transition-opacity active:scale-95`}
-              >
-                +
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={finishExercise}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-600 font-bold text-lg hover:opacity-90 transition-all"
-            >
-              Se resultat →
-            </button>
-          )}
-
-          {renderAnswers()}
-
-          {running && allAnswerCount > 0 && (
-            <button
-              onClick={() => {
-                clearInterval(timerRef.current);
-                setRunning(false);
-                setTimeLeft(0);
+        {/* Input / Finish */}
+        {running ? (
+          <div className="flex gap-2 mb-2">
+            <input
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") addAnswer();
               }}
-              className="mt-2 text-gray-500 hover:text-gray-300 text-sm transition-colors block mx-auto"
+              placeholder={
+                exIdx === 2
+                  ? `Svar som ${challengeData?.perspectives[activePerspective]}...`
+                  : "Skriv ditt svar..."
+              }
+              className="flex-1 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-white/30 transition-colors"
+              style={{ background: "rgba(0,0,0,0.3)" }}
+            />
+            <button
+              onClick={addAnswer}
+              className={`px-5 rounded-xl bg-gradient-to-r ${ex.color} font-bold hover:opacity-90 transition-opacity active:scale-95`}
             >
-              Avsluta tidigt →
+              +
             </button>
-          )}
-        </div>
+          </div>
+        ) : (
+          <button
+            onClick={finishExercise}
+            className="w-full py-4 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-600 font-bold text-lg hover:opacity-90 transition-all"
+          >
+            Se resultat →
+          </button>
+        )}
+
+        {renderAnswers()}
+
+        {running && allAnswerCount > 0 && (
+          <button
+            onClick={() => {
+              clearInterval(timerRef.current);
+              setRunning(false);
+              setTimeLeft(0);
+            }}
+            className="mt-2 text-gray-500 hover:text-gray-300 text-sm transition-colors block mx-auto"
+          >
+            Avsluta tidigt →
+          </button>
+        )}
       </div>
     </div>
   );

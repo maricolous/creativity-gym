@@ -204,12 +204,8 @@ export default function ExerciseScreen({
 
   return (
     <div
-      className="text-white flex flex-col items-center justify-center p-4 relative"
-      style={{
-        ...fadeStyle,
-        fontFamily: "'Segoe UI', system-ui, sans-serif",
-        minHeight: "100dvh",
-      }}
+      className="min-h-screen text-white flex flex-col items-center justify-center p-4 relative"
+      style={{ ...fadeStyle, fontFamily: "'Segoe UI', system-ui, sans-serif" }}
     >
       <FullscreenCornerBtn />
       <MuteBtn muted={muted} onToggle={toggleMute} />

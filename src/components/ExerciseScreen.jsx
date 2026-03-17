@@ -113,7 +113,7 @@ export default function ExerciseScreen({
       finishExercise();
     }
   }, [timeLeft, running]);
-  console.log("exIdx:", exIdx, "challengeData:", challengeData);
+
   // Renderar ordet/ordparet
   const renderWord = () => {
     if (!running || !challengeData) return null;
@@ -141,45 +141,6 @@ export default function ExerciseScreen({
       return (
         <div className="text-6xl font-black text-center text-white my-24">
           {challengeData.object}
-        </div>
-      );
-    }
-    if (exIdx === 3) {
-      return (
-        <div className="space-y-3" style={{ margin: "4vh 0" }}>
-          <div className="text-4xl font-black text-center text-white">
-            {challengeData.object}
-          </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            <span className="bg-rose-500/20 text-rose-300 px-3 py-1.5 rounded-full text-sm border border-rose-500/30">
-              {challengeData.constraint}
-            </span>
-            <span className="bg-blue-500/20 text-blue-300 px-3 py-1.5 rounded-full text-sm border border-blue-500/30">
-              {challengeData.context}
-            </span>
-            <span className="bg-amber-500/20 text-amber-300 px-3 py-1.5 rounded-full text-sm border border-amber-500/30">
-              {challengeData.perspective}
-            </span>
-            <span className="bg-purple-500/20 text-purple-300 px-3 py-1.5 rounded-full text-sm border border-purple-500/30">
-              {challengeData.twist}
-            </span>
-          </div>
-        </div>
-      );
-    }
-    if (exIdx === 4) {
-      return (
-        <div
-          className="flex items-center justify-center gap-4"
-          style={{ margin: "8vh 0" }}
-        >
-          <span className="text-5xl font-black text-white">
-            {challengeData.a}
-          </span>
-          <span className="text-emerald-400 text-3xl">×</span>
-          <span className="text-5xl font-black text-white">
-            {challengeData.b}
-          </span>
         </div>
       );
     }
@@ -243,8 +204,12 @@ export default function ExerciseScreen({
 
   return (
     <div
-      className="min-h-screen text-white flex flex-col items-center justify-center p-4 relative"
-      style={{ ...fadeStyle, fontFamily: "'Segoe UI', system-ui, sans-serif" }}
+      className="text-white flex flex-col items-center justify-center p-4 relative"
+      style={{
+        ...fadeStyle,
+        fontFamily: "'Segoe UI', system-ui, sans-serif",
+        minHeight: "100dvh",
+      }}
     >
       <FullscreenCornerBtn />
       <MuteBtn muted={muted} onToggle={toggleMute} />

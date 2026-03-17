@@ -32,14 +32,6 @@ export default function ExerciseScreen({
       ? Object.values(perspectiveAnswers).reduce((s, a) => s + a.length, 0)
       : answers.length;
 
-  const beginTimer = useCallback(() => {
-    setTimeout(() => inputRef.current?.focus(), 100);
-  }, []);
-
-  useEffect(() => {
-    beginTimer();
-  }, []);
-
   useEffect(() => {
     if (!running || timeLeft <= 0) return;
     timerRef.current = setInterval(() => {
@@ -114,19 +106,24 @@ export default function ExerciseScreen({
     }
   }, [timeLeft, running]);
 
-  // Renderar ordet/ordparet
   const renderWord = () => {
     if (!running || !challengeData) return null;
     if (exIdx === 0) {
       return (
-        <div className="text-6xl font-black text-center text-white my-24">
+        <div
+          className="text-6xl font-black text-center text-white"
+          style={{ margin: "8vh 0" }}
+        >
           {challengeData.name}
         </div>
       );
     }
     if (exIdx === 1) {
       return (
-        <div className="flex items-center justify-center gap-4 my-24">
+        <div
+          className="flex items-center justify-center gap-4"
+          style={{ margin: "8vh 0" }}
+        >
           <span className="text-6xl font-black text-white">
             {challengeData.a}
           </span>
@@ -139,15 +136,56 @@ export default function ExerciseScreen({
     }
     if (exIdx === 2) {
       return (
-        <div className="text-6xl font-black text-center text-white my-24">
+        <div
+          className="text-6xl font-black text-center text-white"
+          style={{ margin: "8vh 0" }}
+        >
           {challengeData.object}
+        </div>
+      );
+    }
+    if (exIdx === 3) {
+      return (
+        <div className="space-y-3" style={{ margin: "4vh 0" }}>
+          <div className="text-4xl font-black text-center text-white">
+            {challengeData.object}
+          </div>
+          <div className="flex flex-wrap justify-center gap-2">
+            <span className="bg-rose-500/20 text-rose-300 px-3 py-1.5 rounded-full text-sm border border-rose-500/30">
+              {challengeData.constraint}
+            </span>
+            <span className="bg-blue-500/20 text-blue-300 px-3 py-1.5 rounded-full text-sm border border-blue-500/30">
+              {challengeData.context}
+            </span>
+            <span className="bg-amber-500/20 text-amber-300 px-3 py-1.5 rounded-full text-sm border border-amber-500/30">
+              {challengeData.perspective}
+            </span>
+            <span className="bg-purple-500/20 text-purple-300 px-3 py-1.5 rounded-full text-sm border border-purple-500/30">
+              {challengeData.twist}
+            </span>
+          </div>
+        </div>
+      );
+    }
+    if (exIdx === 4) {
+      return (
+        <div
+          className="flex items-center justify-center gap-4"
+          style={{ margin: "8vh 0" }}
+        >
+          <span className="text-5xl font-black text-white">
+            {challengeData.a}
+          </span>
+          <span className="text-emerald-400 text-3xl">×</span>
+          <span className="text-5xl font-black text-white">
+            {challengeData.b}
+          </span>
         </div>
       );
     }
     return null;
   };
 
-  // Renderar perspektivknappar
   const renderPerspectives = () => {
     if (exIdx !== 2 || !running || !challengeData) return null;
     return (
@@ -180,7 +218,6 @@ export default function ExerciseScreen({
     );
   };
 
-  // Renderar svar-tags
   const renderAnswers = () => {
     if (!running) return null;
     const items =
@@ -204,122 +241,130 @@ export default function ExerciseScreen({
 
   return (
     <div
-      className="min-h-screen text-white flex flex-col items-center justify-center p-4 relative"
+      className="min-h-screen text-white flex flex-col p-4 relative"
       style={{ ...fadeStyle, fontFamily: "'Segoe UI', system-ui, sans-serif" }}
     >
       <FullscreenCornerBtn />
       <MuteBtn muted={muted} onToggle={toggleMute} />
       <BgLayer image={chosenImage} opacity={0.65} />
 
-      <div className="max-w-lg w-full relative z-10">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-2">
-          <button
-            onClick={() => setScreen("home")}
-            className="text-gray-400 hover:text-white transition-colors text-sm"
-          >
-            ← Tillbaka
-          </button>
-          <span className="font-bold">{ex.subtitle}</span>
-          <div className="text-sm text-gray-400">{allAnswerCount} svar</div>
-        </div>
+      <div
+        className="max-w-lg w-full mx-auto relative z-10 flex flex-col"
+        style={{ minHeight: "100dvh" }}
+      >
+        {/* Fast topp-sektion */}
+        <div className="flex-shrink-0">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-2">
+            <button
+              onClick={() => setScreen("home")}
+              className="text-gray-400 hover:text-white transition-colors text-sm"
+            >
+              ← Tillbaka
+            </button>
+            <span className="font-bold">{ex.subtitle}</span>
+            <div className="text-sm text-gray-400">{allAnswerCount} svar</div>
+          </div>
 
-        {/* Progress bar */}
-        <div className="relative h-2 bg-white/10 rounded-full overflow-hidden mb-1">
+          {/* Progress bar */}
+          <div className="relative h-2 bg-white/10 rounded-full overflow-hidden mb-1">
+            <div
+              className={`h-full rounded-full bg-gradient-to-r ${ex.color} transition-all duration-1000`}
+              style={{ width: `${100 - pct}%` }}
+            />
+          </div>
+
+          {/* Timer */}
           <div
-            className={`h-full rounded-full bg-gradient-to-r ${ex.color} transition-all duration-1000`}
-            style={{ width: `${100 - pct}%` }}
-          />
-        </div>
-
-        {/* Timer */}
-        <div
-          className="flex justify-between text-sm"
-          style={{ margin: "5vh 0" }}
-        >
-          <div className="flex-1" />
-          <span
-            className={`font-mono font-bold text-2xl ${timeLeft <= 10 && timeLeft > 0 ? "text-red-400 animate-pulse" : "text-white"}`}
+            className="flex justify-center text-sm"
+            style={{ margin: "2vh 0" }}
           >
-            {fmt(timeLeft)}
-          </span>
-          <div className="flex-1 flex justify-end">
-            {motivation && (
+            <span
+              className={`font-mono font-bold text-2xl ${timeLeft <= 10 && timeLeft > 0 ? "text-red-400 animate-pulse" : "text-white"}`}
+            >
+              {fmt(timeLeft)}
+            </span>
+          </div>
+
+          {/* Ordet */}
+          {renderWord()}
+
+          {/* Challenge card */}
+          <div
+            className="rounded-2xl p-5 mb-3 border border-white/10 relative overflow-hidden"
+            style={{
+              background: "rgba(0,0,0,0.3)",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            <div
+              className={`absolute inset-0 ${ex.bgGlow} blur-3xl opacity-20`}
+            />
+            <div className="relative">
+              <p className="text-gray-400 text-sm">{ex.description}</p>
+              {renderPerspectives()}
+            </div>
+          </div>
+
+          {motivation && (
+            <div className="text-center mb-2">
               <span className="text-amber-400 font-medium animate-bounce text-sm">
                 {motivation}
               </span>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
-        {/* Ordet */}
-        {renderWord()}
-
-        {/* Challenge card */}
-        <div
-          className="rounded-2xl p-5 mb-5 border border-white/10 relative overflow-hidden"
-          style={{ background: "rgba(0,0,0,0.3)", backdropFilter: "blur(8px)" }}
-        >
-          <div
-            className={`absolute inset-0 ${ex.bgGlow} blur-3xl opacity-20`}
-          />
-          <div className="relative">
-            <p className="text-gray-400 text-sm">{ex.description}</p>
-            {renderPerspectives()}
-          </div>
-        </div>
-
-        {/* Input / Finish */}
-        {running ? (
-          <div className="flex gap-2 mb-4">
-            <input
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") addAnswer();
-              }}
-              placeholder={
-                exIdx === 2
-                  ? `Svar som ${challengeData?.perspectives[activePerspective]}...`
-                  : "Skriv ditt svar..."
-              }
-              className="flex-1 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-white/30 transition-colors"
-              style={{ background: "rgba(0,0,0,0.3)" }}
-              autoFocus
-            />
+        {/* Input-sektion – pushad till botten */}
+        <div className="flex-shrink-0 mt-auto">
+          {running ? (
+            <div className="flex gap-2 mb-2">
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") addAnswer();
+                }}
+                placeholder={
+                  exIdx === 2
+                    ? `Svar som ${challengeData?.perspectives[activePerspective]}...`
+                    : "Skriv ditt svar..."
+                }
+                className="flex-1 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-white/30 transition-colors"
+                style={{ background: "rgba(0,0,0,0.3)" }}
+              />
+              <button
+                onClick={addAnswer}
+                className={`px-5 rounded-xl bg-gradient-to-r ${ex.color} font-bold hover:opacity-90 transition-opacity active:scale-95`}
+              >
+                +
+              </button>
+            </div>
+          ) : (
             <button
-              onClick={addAnswer}
-              className={`px-5 rounded-xl bg-gradient-to-r ${ex.color} font-bold hover:opacity-90 transition-opacity active:scale-95`}
+              onClick={finishExercise}
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-600 font-bold text-lg hover:opacity-90 transition-all"
             >
-              +
+              Se resultat →
             </button>
-          </div>
-        ) : (
-          <button
-            onClick={finishExercise}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-600 font-bold text-lg hover:opacity-90 transition-all"
-          >
-            Se resultat →
-          </button>
-        )}
+          )}
 
-        {/* Answers */}
-        {renderAnswers()}
+          {renderAnswers()}
 
-        {/* Stop early */}
-        {running && allAnswerCount > 0 && (
-          <button
-            onClick={() => {
-              clearInterval(timerRef.current);
-              setRunning(false);
-              setTimeLeft(0);
-            }}
-            className="mt-4 text-gray-500 hover:text-gray-300 text-sm transition-colors block mx-auto"
-          >
-            Avsluta tidigt →
-          </button>
-        )}
+          {running && allAnswerCount > 0 && (
+            <button
+              onClick={() => {
+                clearInterval(timerRef.current);
+                setRunning(false);
+                setTimeLeft(0);
+              }}
+              className="mt-2 text-gray-500 hover:text-gray-300 text-sm transition-colors block mx-auto"
+            >
+              Avsluta tidigt →
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

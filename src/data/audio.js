@@ -8,4 +8,6 @@ export const AUDIO = {
   exercise1: associativMusic,
   exercise2: divergentMusic,
   exercise3: perscpectiveMusic,
+  exercise4: associativMusic,
+  exercise5: perscpectiveMusic,
 };

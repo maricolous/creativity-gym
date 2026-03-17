@@ -4,6 +4,7 @@ import { AUDIO } from "./data/audio";
 import { EXERCISES } from "./data/exercises";
 import { WORD_POOL } from "./data/wordPool";
 import { shuffle } from "./utils/helpers";
+import { CONSTRAINTS, CONTEXTS, PERSPECTIVES, TWISTS } from "./data/challenges";
 
 import WelcomeScreen from "./components/WelcomeScreen";
 import ImagePicker from "./components/ImagePicker";
@@ -73,7 +74,27 @@ export default function App() {
         b: p[1].charAt(0).toUpperCase() + p[1].slice(1),
       };
     }
-    return shuffle(EXERCISES[idx].prompts)[0];
+    if (idx === 2) {
+      return shuffle(EXERCISES[idx].prompts)[0];
+    }
+    if (idx === 3) {
+      const w = shuffle(WORD_POOL)[0];
+      return {
+        object: w.charAt(0).toUpperCase() + w.slice(1),
+        constraint: shuffle(CONSTRAINTS)[0],
+        context: shuffle(CONTEXTS)[0],
+        perspective: shuffle(PERSPECTIVES)[0],
+        twist: shuffle(TWISTS)[0],
+      };
+    }
+    if (idx === 4) {
+      const p = shuffle(WORD_POOL).slice(0, 2);
+      return {
+        a: p[0].charAt(0).toUpperCase() + p[0].slice(1),
+        b: p[1].charAt(0).toUpperCase() + p[1].slice(1),
+      };
+    }
+    return null;
   }, []);
 
   // Navigation handlers

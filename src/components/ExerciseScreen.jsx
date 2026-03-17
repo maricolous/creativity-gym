@@ -88,6 +88,9 @@ export default function ExerciseScreen({
     }
     const c = answers.length;
     if (exIdx === 0) return c * 10 + (c > 10 ? 50 : 0) + (c > 20 ? 100 : 0);
+    if (exIdx === 1) return c * 20 + (c >= 3 ? 30 : 0);
+    if (exIdx === 3) return c * 25 + (c >= 1 ? 50 : 0);
+    if (exIdx === 4) return c * 25 + (c >= 1 ? 50 : 0);
     return c * 20 + (c >= 3 ? 30 : 0);
   }, [exIdx, answers, perspectiveAnswers]);
 
@@ -110,26 +113,20 @@ export default function ExerciseScreen({
       finishExercise();
     }
   }, [timeLeft, running]);
-
+  console.log("exIdx:", exIdx, "challengeData:", challengeData);
   // Renderar ordet/ordparet
   const renderWord = () => {
     if (!running || !challengeData) return null;
     if (exIdx === 0) {
       return (
-        <div
-          className="text-6xl font-black text-center text-white "
-          style={{ margin: "8vh 0" }}
-        >
+        <div className="text-6xl font-black text-center text-white my-24">
           {challengeData.name}
         </div>
       );
     }
     if (exIdx === 1) {
       return (
-        <div
-          className="flex items-center justify-center gap-4"
-          style={{ margin: "8vh 0" }}
-        >
+        <div className="flex items-center justify-center gap-4 my-24">
           <span className="text-6xl font-black text-white">
             {challengeData.a}
           </span>
@@ -142,11 +139,47 @@ export default function ExerciseScreen({
     }
     if (exIdx === 2) {
       return (
+        <div className="text-6xl font-black text-center text-white my-24">
+          {challengeData.object}
+        </div>
+      );
+    }
+    if (exIdx === 3) {
+      return (
+        <div className="space-y-3" style={{ margin: "4vh 0" }}>
+          <div className="text-4xl font-black text-center text-white">
+            {challengeData.object}
+          </div>
+          <div className="flex flex-wrap justify-center gap-2">
+            <span className="bg-rose-500/20 text-rose-300 px-3 py-1.5 rounded-full text-sm border border-rose-500/30">
+              {challengeData.constraint}
+            </span>
+            <span className="bg-blue-500/20 text-blue-300 px-3 py-1.5 rounded-full text-sm border border-blue-500/30">
+              {challengeData.context}
+            </span>
+            <span className="bg-amber-500/20 text-amber-300 px-3 py-1.5 rounded-full text-sm border border-amber-500/30">
+              {challengeData.perspective}
+            </span>
+            <span className="bg-purple-500/20 text-purple-300 px-3 py-1.5 rounded-full text-sm border border-purple-500/30">
+              {challengeData.twist}
+            </span>
+          </div>
+        </div>
+      );
+    }
+    if (exIdx === 4) {
+      return (
         <div
-          className="text-6xl font-black text-center text-white "
+          className="flex items-center justify-center gap-4"
           style={{ margin: "8vh 0" }}
         >
-          {challengeData.object}
+          <span className="text-5xl font-black text-white">
+            {challengeData.a}
+          </span>
+          <span className="text-emerald-400 text-3xl">×</span>
+          <span className="text-5xl font-black text-white">
+            {challengeData.b}
+          </span>
         </div>
       );
     }

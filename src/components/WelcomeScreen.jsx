@@ -28,7 +28,7 @@ export default function WelcomeScreen({ onStart }) {
           Creativity Gym
         </h1>
         <p className="text-gray-400 mb-10 text-lg">
-          Tre forskningsbaserade övningar för att trigga din kreativitet
+          Fem forskningsbaserade övningar för att trigga din kreativitet
         </p>
         <button
           onClick={() => {
